@@ -1,1 +1,2 @@
-void func (int code);
+void press(int code);
+void down(int code);
