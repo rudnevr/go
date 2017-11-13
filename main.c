@@ -1,8 +1,10 @@
-#include "hello.h"
+#include "hello_fn.h"
+#include <stdio.h>
+#include <windows.h>
 
 int
 main (void)
 {
-  hello ("world");
+    func(VK_LCONTROL);
   return 0;
 }
