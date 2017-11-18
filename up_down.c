@@ -1,4 +1,4 @@
-#include "hello_fn.h"
+#include "up_down.h"
 #include <stdio.h>
 #include <windows.h>
 
@@ -27,6 +27,6 @@ void press(int code){
     input.ki.wVk = vkey;
     input.ki.dwFlags = 0;
     SendInput(1, &input, sizeof(INPUT));
-   	input.ki.dwFlags = KEYEVENTF_KEYUP;
+    input.ki.dwFlags = KEYEVENTF_KEYUP;
     SendInput(1, &input, sizeof(INPUT));
 }
