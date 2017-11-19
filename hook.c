@@ -9,20 +9,9 @@ LRESULT CALLBACK HookProcedure(int nCode, WPARAM wParam, LPARAM lParam) {
     KBDLLHOOKSTRUCT *p = (KBDLLHOOKSTRUCT *)lParam;
     if (nCode == HC_ACTION)
     {
-        if (p->vkCode == VK_LSHIFT || p->vkCode == VK_RSHIFT)
-        {
-            if (wParam == WM_KEYDOWN)
-            {
-                shift = TRUE;
-//                printf("shift keydown");
-            }
-            else
-            {
-                shift = FALSE;
-            }
-        }
         LPTSTR te= mapCodeToText(p->vkCode);
-        if(te!=NULL && shift){
+        if(te != NULL && GetAsyncKeyState(VK_LSHIFT)){
+            printf(te);
             EnumWindows(&EnumWindowsProc, (LPARAM)te);
             return -1;
         }
@@ -45,8 +34,10 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd,  LPARAM lParam){
 }
 
 LPTSTR mapCodeToText(int code){
-    if (code==VK_F2) return "IntelliJ";
-    if (code==VK_F3) return "Chrome";
+    printf("%d", code);
+    if (code==VK_F2) {
+    return "IntelliJ";}
+    if (code==VK_F3) {return "Chrome";}
     return NULL;
 }
 BOOL contains(LPTSTR caption,LPTSTR te){
