@@ -5,7 +5,6 @@
 HHOOK KeyboardHook;
 BOOL shift=FALSE;
 BOOL caps=FALSE;
-LPTSTR text;
 LRESULT CALLBACK HookProcedure(int nCode, WPARAM wParam, LPARAM lParam) {
     KBDLLHOOKSTRUCT *p = (KBDLLHOOKSTRUCT *)lParam;
     if (nCode == HC_ACTION)
@@ -15,16 +14,16 @@ LRESULT CALLBACK HookProcedure(int nCode, WPARAM wParam, LPARAM lParam) {
             if (wParam == WM_KEYDOWN)
             {
                 shift = TRUE;
-                printf("shift keydown");
+//                printf("shift keydown");
             }
             else
             {
                 shift = FALSE;
             }
         }
-        mapCodeToText(p->vkCode);
-        if(text!=NULL && shift){
-            EnumWindows(&EnumWindowsProc, lParam);
+        LPTSTR te= mapCodeToText(p->vkCode);
+        if(te!=NULL && shift){
+            EnumWindows(&EnumWindowsProc, (LPARAM)te);
             return -1;
         }
     }
@@ -34,28 +33,26 @@ LRESULT CALLBACK HookProcedure(int nCode, WPARAM wParam, LPARAM lParam) {
 BOOL CALLBACK EnumWindowsProc(HWND hwnd,  LPARAM lParam){
     char cWindow[1000];
     GetWindowTextA(hwnd,cWindow,sizeof(cWindow));
-    printf("%s\r\n", cWindow);
-    //    KBDLLHOOKSTRUCT *p = (KBDLLHOOKSTRUCT *)lParam;
-    if(contains(cWindow)) {
+//    printf("%s\r\n", cWindow);
+    //    KBDLLHOOKSTRUCT *p = (LPTSTR)lParam;
+    if(contains(cWindow, (LPTSTR)lParam)) {
         SetActiveWindow(hwnd);
         SetForegroundWindow(hwnd);
-        printf("%s_", cWindow);
-        //        BringWindowToTop(hwnd);
-        //        SwitchToThisWindow(hwnd,TRUE);
+//        printf("%s_", cWindow);
         return FALSE;
     }
     return TRUE;
 }
 
-void mapCodeToText(int code){
-    if (code==VK_F2) text = "IntelliJ";
-    if (code==VK_F3) text = "Chrome";
+LPTSTR mapCodeToText(int code){
+    if (code==VK_F2) return "IntelliJ";
+    if (code==VK_F3) return "Chrome";
+    return NULL;
 }
-BOOL contains(LPTSTR caption){
-    printf("in contains");
-    if( strstr(caption, text) != NULL) {
-        printf("in strstr");
-        text = NULL;
+BOOL contains(LPTSTR caption,LPTSTR te){
+//    printf("in contains");
+    if( strstr(caption, te) != NULL) {
+//        text = NULL;
         return TRUE;
     }
     return FALSE;
