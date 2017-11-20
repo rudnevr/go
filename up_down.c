@@ -30,3 +30,9 @@ void press(int code){
     input.ki.dwFlags = KEYEVENTF_KEYUP;
     SendInput(1, &input, sizeof(INPUT));
 }
+
+void pressCtrlCode(int code){
+        down(VK_LCONTROL);
+        press(code);
+        press(VK_LCONTROL);
+}

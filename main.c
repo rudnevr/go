@@ -6,7 +6,7 @@
 
 
 void setHook(){
-    printf("start");
+//    printf("start");
     KeyboardHook = SetWindowsHookEx(
             WH_KEYBOARD_LL,
             HookProcedure,
